@@ -8,12 +8,20 @@ public static class Arrays
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
     public static double[] MultiplesOf(double number, int length)
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // First I make a new array with the size that was given by length.
+        // Then I go through every position in the array with a for loop.
+        // Because array indexes start at 0, I use i + 1 to get the correct multiple.
+        // Each result is saved in the array.
+        // At the end I return the finished array.
 
-        return []; // replace this return statement with your own
+        double[] result = new double[length];
+
+        for (int i = 0; i < length; i++)
+        {
+            result[i] = number * (i + 1);
+        }
+
+        return result;
     }
 
     /// <summary>
@@ -25,9 +33,22 @@ public static class Arrays
     /// </summary>
     public static void RotateListRight(List<int> data, int amount)
     {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // First I find the place where the last part of the list starts.
+        // The last part is the amount of numbers that need to move to the front.
+        // Then I save the last part in a new temporary list.
+        // I also save the first part of the list in another temporary list.
+        // After that I clear the original list.
+        // Then I add the last part first, because it should now be at the front.
+        // Finally I add the first part after it.
+
+        int splitIndex = data.Count - amount;
+
+        List<int> rightPart = data.GetRange(splitIndex, amount);
+        List<int> leftPart = data.GetRange(0, splitIndex);
+
+        data.Clear();
+
+        data.AddRange(rightPart);
+        data.AddRange(leftPart);
     }
 }
