@@ -6,34 +6,62 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 public class PriorityQueueTests
 {
     [TestMethod]
-    // Scenario: This test checks if the queue removes the item with the highest priority first.
-    // Expected Result: B should be returned because it has the highest priority.
-    // Defect(s) Found: No defect found after the priority queue logic was fixed.
+    // Scenario: Add three items with different priorities.
+    // Expected Result: The item with the highest priority should be removed first.
+    // Defect(s) Found: The priority queue did not always check all items correctly before choosing the highest priority.
     public void TestPriorityQueue_1()
     {
-        var queue = new PriorityQueue();
+        var priorityQueue = new PriorityQueue();
 
-        queue.Enqueue("A", 1);
-        queue.Enqueue("B", 5);
-        queue.Enqueue("C", 3);
+        priorityQueue.Enqueue("A", 1);
+        priorityQueue.Enqueue("B", 5);
+        priorityQueue.Enqueue("C", 3);
 
-        Assert.AreEqual("B", queue.Dequeue());
+        Assert.AreEqual("B", priorityQueue.Dequeue());
     }
 
     [TestMethod]
-    // Scenario: This test checks if items with the same priority follow FIFO order.
-    // Expected Result: A should be returned before B because A was added first.
-    // Defect(s) Found: No defect found after the priority queue logic was fixed. 
+    // Scenario: Add multiple items where two items have the same highest priority.
+    // Expected Result: The item that was added first should be removed first.
+    // Defect(s) Found: The priority queue used the later item when priorities were equal instead of keeping FIFO order.
     public void TestPriorityQueue_2()
     {
-        var queue = new PriorityQueue();
+        var priorityQueue = new PriorityQueue();
 
-        queue.Enqueue("A", 4);
-        queue.Enqueue("B", 4);
-        queue.Enqueue("C", 2);
+        priorityQueue.Enqueue("A", 4);
+        priorityQueue.Enqueue("B", 4);
+        priorityQueue.Enqueue("C", 2);
 
-        Assert.AreEqual("A", queue.Dequeue());
+        Assert.AreEqual("A", priorityQueue.Dequeue());
     }
 
-    // Add more test cases as needed below.
+    [TestMethod]
+    // Scenario: Remove all items from the queue after adding them with different priorities.
+    // Expected Result: Items should come out from highest priority to lowest priority.
+    // Defect(s) Found: The removed item was not being removed from the queue correctly.
+    public void TestPriorityQueue_3()
+    {
+        var priorityQueue = new PriorityQueue();
+
+        priorityQueue.Enqueue("A", 1);
+        priorityQueue.Enqueue("B", 5);
+        priorityQueue.Enqueue("C", 3);
+
+        Assert.AreEqual("B", priorityQueue.Dequeue());
+        Assert.AreEqual("C", priorityQueue.Dequeue());
+        Assert.AreEqual("A", priorityQueue.Dequeue());
+    }
+
+    [TestMethod]
+    // Scenario: Try to dequeue from an empty priority queue.
+    // Expected Result: An InvalidOperationException should be thrown with the message "The queue is empty."
+    // Defect(s) Found: No defect found after checking the empty queue requirement.
+    public void TestPriorityQueue_Empty()
+    {
+        var priorityQueue = new PriorityQueue();
+
+        var exception = Assert.ThrowsException<InvalidOperationException>(() => priorityQueue.Dequeue());
+
+        Assert.AreEqual("The queue is empty.", exception.Message);
+    }
 }
